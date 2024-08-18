@@ -1,4 +1,5 @@
 const express = require('express');
+const pool = require('./db');
 const cors = require('cors'); // Optional, if you installed it
 const bodyParser = require('body-parser'); // Optional, if you installed it
 
@@ -12,6 +13,16 @@ app.use(bodyParser.json()); // Optional
 // Basic route
 app.get('/', (req, res) => {
   res.send('Hello World!');
+});
+
+app.get('/api/stocks', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM stocks');
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
 });
 
 // Start the server
