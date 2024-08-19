@@ -1,14 +1,12 @@
 const express = require('express');
-const pool = require('./db');
+const { pool } = require('./db');
 const cors = require('cors'); // Optional, if you installed it
-const bodyParser = require('body-parser'); // Optional, if you installed it
 
 const app = express();
 const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors()); // Optional
-app.use(bodyParser.json()); // Optional
 
 // Basic route
 app.get('/', (req, res) => {
