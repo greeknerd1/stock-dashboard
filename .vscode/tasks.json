@@ -7,13 +7,6 @@
         "script": "start",
         "path": "frontend",
         "problemMatcher": []
-      },
-      {
-        "label": "Start Backend",
-        "type": "npm",
-        "script": "start",
-        "path": "backend",
-        "problemMatcher": []
       }
     ]
   }

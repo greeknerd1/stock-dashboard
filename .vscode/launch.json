@@ -1,14 +1,16 @@
 {
     "version": "0.2.0",
     "configurations": [
-      {
+    {
         "name": "Debug Frontend",
         "type": "chrome",
         "request": "launch",
         "url": "http://localhost:3000",
         "webRoot": "${workspaceFolder}/frontend/src",
-        "preLaunchTask": "Start Frontend"
-      },
+        "sourceMapPathOverrides": {
+            "webpack:///src/*": "${webRoot}/*"
+        }
+    },
       {
         "name": "Debug Backend",
         "type": "node",
