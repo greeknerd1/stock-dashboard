@@ -2,14 +2,24 @@
     "version": "2.0.0",
     "tasks": [
       {
-        "label": "npm: start-backend",
+        "label": "Start Backend",
         "type": "shell",
-        "command": "npm",
-        "args": ["start"],
+        "command": "npm start",
+        "isBackground": true,
         "options": {
-          "cwd": "${workspaceFolder}/backend" // Adjust the path to your backend directory
+          "cwd": "${workspaceFolder}/backend"
         },
-        "problemMatcher": []
+        "problemMatcher": ["$tsc-watch"]
+      },
+      {
+        "label": "Start Frontend",
+        "type": "shell",
+        "command": "npm start",
+        "isBackground": true,
+        "options": {
+          "cwd": "${workspaceFolder}/frontend"
+        },
+        "problemMatcher": ["$tsc-watch"]
       }
     ]
   }
