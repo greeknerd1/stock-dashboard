@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Debug Backend",
+        "program": "${workspaceFolder}/backend/server.js", // Adjust the path to your backend entry file
+        "preLaunchTask": "npm: start-backend" // Optional: if you have a task to start the backend
+      },
+      {
+        "type": "chrome",
+        "request": "launch",
+        "name": "Debug Frontend",
+        "url": "http://localhost:3000", // Default React port; adjust if different
+        "webRoot": "${workspaceFolder}/frontend/src" // Adjust to your frontend src directory
+      }
+    ]
+  }  

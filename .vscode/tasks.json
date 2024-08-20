@@ -1,0 +1,16 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "npm: start-backend",
+        "type": "shell",
+        "command": "npm",
+        "args": ["start"],
+        "options": {
+          "cwd": "${workspaceFolder}/backend" // Adjust the path to your backend directory
+        },
+        "problemMatcher": []
+      }
+    ]
+  }
+  

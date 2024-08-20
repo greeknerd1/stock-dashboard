@@ -10,7 +10,7 @@ function StocksList() {
   useEffect(() => {
     const fetchStocks = async () => {
       try {
-        const response = await fetch('/api/stocks'); // Adjust the endpoint to your backend route
+        const response = await fetch('http://localhost:5000/api/stocks');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
