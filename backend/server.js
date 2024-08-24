@@ -1,6 +1,7 @@
 const express = require('express');
 const pool = require('./db');
 const cors = require('cors'); // Optional, if you installed it
+require('./updateStocks.js')
 
 const app = express();
 const port = process.env.PORT || 5000;
