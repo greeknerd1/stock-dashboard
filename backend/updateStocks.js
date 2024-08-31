@@ -76,21 +76,23 @@ const updateDatabase = async () => {
     for (const [tickerSymbol, avSymbol] of Object.entries(stocks)) {
       const latestDate = await getLatestDate(tickerSymbol);
       const data = await fetchStockData(avSymbol, latestDate);
-
       for (const [date, metrics] of Object.entries(data)) {
-        await client.query(`
+        q = `
           INSERT INTO stocks (ticker_symbol, date, open_price, high_price, low_price, close_price, adj_close_price, volume)
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-        `, [
-          tickerSymbol,
-          date,
-          metrics['1. open'],
-          metrics['2. high'],
-          metrics['3. low'],
-          metrics['4. close'],
-          metrics['5. adjusted close'],
-          metrics['5. volume']
-        ]);
+        `
+        v = [
+            tickerSymbol,
+            date,
+            metrics['1. open'],
+            metrics['2. high'],
+            metrics['3. low'],
+            metrics['4. close'],
+            metrics['5. adjusted close'],
+            metrics['5. volume']
+          ]
+        console.log(v)
+        await client.query(q, v);
       }
     }
   } catch (err) {
