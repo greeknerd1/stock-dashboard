@@ -34,8 +34,8 @@ function StocksList() {
       <h2>Stocks List</h2>
       <ul>
         {stocks.map(stock => (
-          <li key={stock.ticker_symbol}>
-            {stock.ticker_symbol}: ${stock.latest_share_price}
+          <li key={stock.id}>
+            {stock.ticker_symbol} {stock.date}: ${stock.close_price}
           </li>
         ))}
       </ul>

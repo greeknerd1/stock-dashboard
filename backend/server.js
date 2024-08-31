@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 
 app.get('/api/stocks', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM stocks');
+    const result = await pool.query('SELECT * FROM stocks ORDER BY id DESC LIMIT 3');
     res.json(result.rows);
   } catch (err) {
     console.error(err);
