@@ -1,0 +1,50 @@
+/* src/styles/Watchlist.css */
+
+/* Style the table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  /* Style table headers */
+  th {
+    background-color: #f4f4f4;
+    padding: 10px;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  /* Style table cells */
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Add hover effect to rows */
+  tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Style the link to add stock */
+  a {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #007bff;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+  }
+  
+  a:hover {
+    background-color: #e2e6ea;
+    border-color: #ddd;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  

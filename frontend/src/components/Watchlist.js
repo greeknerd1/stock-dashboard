@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import '../styles/Watchlist.css'; // Import your CSS file
 
 function Watchlist() {
     const [stocks, setStocks] = useState([]);
