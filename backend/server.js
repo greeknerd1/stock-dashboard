@@ -16,7 +16,21 @@ app.get('/', (req, res) => {
 
 app.get('/api/stocks', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM stocks ORDER BY id DESC LIMIT 3');
+    const result = await pool.query(`SELECT DISTINCT ON (ticker_symbol)
+    ticker_symbol,
+    date,
+    open_price,
+    high_price,
+    low_price,
+    close_price,
+    adj_close_price,
+    volume
+FROM
+    stocks
+ORDER BY
+    ticker_symbol,
+    date DESC;
+`);
     res.json(result.rows);
   } catch (err) {
     console.error(err);
