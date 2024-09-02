@@ -2,6 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Watchlist.css'; // Import your CSS file
 
+const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
 function Watchlist() {
     const [stocks, setStocks] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -50,7 +55,7 @@ function Watchlist() {
                                     {stock.ticker_symbol}
                                 </Link>
                             </td>
-                            <td>{stock.date}</td>
+                            <td>{formatDate(stock.date)}</td>
                             <td>${stock.close_price}</td>
                             <td>{stock.volume}</td>
                         </tr>
