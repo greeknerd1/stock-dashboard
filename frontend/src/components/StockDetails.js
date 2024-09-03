@@ -6,6 +6,11 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 // Register the components used in the chart
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
+const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
 function StockDetails() {
   const { tickerSymbol } = useParams();
   const [stockData, setStockData] = useState([]);
@@ -38,7 +43,7 @@ function StockDetails() {
 
   // Prepare data for the chart
   const chartData = {
-    labels: stockData.map(item => item.date),
+    labels: stockData.map(item => formatDate(item.date)),
     datasets: [{
       label: 'Closing Price',
       data: stockData.map(item => item.close_price),
