@@ -49,7 +49,7 @@ function Watchlist() {
                 </thead>
                 <tbody>
                     {stocks.map(stock => (
-                        <tr key={stock.id}>
+                        <tr key={stock.ticker_symbol}>
                             <td>
                                 <Link to={`/stock/${stock.ticker_symbol}`}>
                                     {stock.ticker_symbol}
