@@ -85,6 +85,52 @@ app.get('/api/stocks/:tickerSymbol', async (req, res) => {
   }
 });
 
+app.get('/api/stocks/:ticker_symbol/metrics', async (req, res) => {
+  const ticker = req.params.ticker_symbol;
+  
+  try {
+      const additionalMetricsQuery = `
+          SELECT 
+              MAX(close_price) AS max_price_52_week,
+              MIN(close_price) AS min_price_52_week
+          FROM stocks
+          WHERE ticker_symbol = $1
+            AND date >= NOW() - INTERVAL '1 year';
+      `;
+
+      const previousCloseQuery = `
+          SELECT close_price
+          FROM stocks
+          WHERE ticker_symbol = $1
+          ORDER BY date DESC
+          OFFSET 1 LIMIT 1;
+      `;
+
+      // Execute the two queries in parallel
+      const [metricsResult, previousCloseResult] = await Promise.all([
+          pool.query(additionalMetricsQuery, [ticker]),
+          pool.query(previousCloseQuery, [ticker])
+      ]);
+
+      if (metricsResult.rows.length === 0 || previousCloseResult.rows.length === 0) {
+          return res.status(404).json({ error: 'Metrics or previous close not found' });
+      }
+
+      const additionalMetrics = metricsResult.rows[0];
+      const previousClose = previousCloseResult.rows[0].close_price;
+
+      res.json({
+          max_price_52_week: additionalMetrics.max_price_52_week,
+          min_price_52_week: additionalMetrics.min_price_52_week,
+          previous_close: previousClose
+      });
+      
+  } catch (error) {
+      console.error('Error fetching stock metrics:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 // Start the server
 app.listen(port, () => {

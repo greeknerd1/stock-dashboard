@@ -9,15 +9,17 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
-  };
+};
 
 function StockDetails() {
   const { tickerSymbol } = useParams();
   const [stockData, setStockData] = useState([]);
+  const [metrics, setMetrics] = useState(null); // To store additional stock metrics
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState('1y'); // Default period
 
+  // Fetch stock data
   useEffect(() => {
     const fetchStockDetails = async () => {
       try {
@@ -38,7 +40,25 @@ function StockDetails() {
     fetchStockDetails();
   }, [tickerSymbol, selectedPeriod]);
 
-  if (loading) return <p>Loading stock details...</p>;
+  // Fetch additional stock metrics
+  useEffect(() => {
+    const fetchMetrics = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/stocks/${tickerSymbol}/metrics`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const metricsData = await response.json();
+        setMetrics(metricsData);
+      } catch (error) {
+        setError(error);
+      }
+    };
+
+    fetchMetrics();
+  }, [tickerSymbol]);
+
+  if (loading || !metrics) return <p>Loading stock details...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   // Prepare data for the chart
@@ -68,9 +88,9 @@ function StockDetails() {
         <Line data={chartData} />
       </div>
       <div>
-        {/* Financial Metrics - Example data, replace with real calculations */}
-        <p><strong>52 Week Range:</strong> $120 - $180</p>
-        <p><strong>Volume:</strong> 1,000,000</p>
+        <h3>Financial Metrics</h3>
+        <p><strong>52 Week Range:</strong> {metrics.min_price_52_week} - {metrics.max_price_52_week}</p>
+        <p><strong>Previous Close:</strong> ${metrics.previous_close}</p>
       </div>
     </div>
   );
