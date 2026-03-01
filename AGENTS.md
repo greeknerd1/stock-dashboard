@@ -27,7 +27,7 @@ cd ../backend && npm install
 Run services in separate terminals:
 
 ```bash
-# backend (default: http://localhost:5000)
+# backend (local default: http://localhost:5001)
 cd backend && npm start
 
 # frontend (default: http://localhost:3000)
@@ -45,7 +45,7 @@ DB_DATABASE=...
 DB_PASSWORD=...
 DB_PORT=5432
 AV_API_KEY=...
-PORT=5000
+PORT=5001
 ```
 
 Notes:
@@ -87,7 +87,7 @@ When making changes, prefer:
 
 - `frontend/src/App.test.js` is the CRA default test and is currently out of sync with the actual UI.
 - `backend/updateStocks.js` uses implicit globals (`q`, `v`) and maps both adjusted close and volume from key `5` in Alpha Vantage payloads; review carefully before relying on imported values.
-- `frontend` currently fetches backend data with hardcoded `http://localhost:5000`.
+- `frontend` currently fetches backend data with hardcoded `http://localhost:5001`.
 
 ## Agent Workflow Expectations
 
