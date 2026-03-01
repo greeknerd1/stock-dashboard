@@ -6,7 +6,18 @@
         "type": "npm",
         "script": "start",
         "path": "frontend",
-        "problemMatcher": []
+        "isBackground": true,
+        "problemMatcher": {
+          "owner": "custom",
+          "pattern": {
+            "regexp": "^$"
+          },
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "Starting the development server",
+            "endsPattern": "Compiled successfully"
+          }
+        }
       }
     ]
   }

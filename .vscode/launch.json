@@ -6,6 +6,7 @@
         "type": "chrome",
         "request": "launch",
         "url": "http://localhost:3000",
+        "preLaunchTask": "Start Frontend",
         "webRoot": "${workspaceFolder}/frontend/src",
         "sourceMapPathOverrides": {
             "webpack:///src/*": "${webRoot}/*"
@@ -16,13 +17,17 @@
         "type": "node",
         "request": "launch",
         "program": "${workspaceFolder}/backend/server.js",
-        "cwd": "${workspaceFolder}/backend"
-      },
+        "cwd": "${workspaceFolder}/backend",
+        "env": {
+          "PORT": "5001"
+        }
+      }
     ],
     "compounds": [
     {
       "name": "Debug Both",
-      "configurations": ["Debug Backend", "Debug Frontend"]
+      "configurations": ["Debug Backend", "Debug Frontend"],
+      "stopAll": true
     }
   ]
   }

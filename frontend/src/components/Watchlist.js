@@ -16,7 +16,7 @@ function Watchlist() {
     useEffect(() => {
         const fetchStocks = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/stocks');
+                const response = await fetch('http://localhost:5001/api/stocks');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

@@ -24,7 +24,7 @@ function StockDetails() {
     const fetchStockDetails = async () => {
       try {
         // Fetch stock data based on selected period
-        const response = await fetch(`http://localhost:5000/api/stocks/${tickerSymbol}?period=${selectedPeriod}`);
+        const response = await fetch(`http://localhost:5001/api/stocks/${tickerSymbol}?period=${selectedPeriod}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -44,7 +44,7 @@ function StockDetails() {
   useEffect(() => {
     const fetchMetrics = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/stocks/${tickerSymbol}/metrics`);
+        const response = await fetch(`http://localhost:5001/api/stocks/${tickerSymbol}/metrics`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
