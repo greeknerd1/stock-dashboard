@@ -1,10 +1,16 @@
 const express = require('express');
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+const path = require('path');
 const pool = require('./db');
 const cors = require('cors');
-require('./updateStocks.js')
+require('dotenv').config();
+require('./updateStocks.js');
 
 const app = express();
 const port = process.env.PORT || 5000;
+const isHttpsEnabled = process.env.ENABLE_HTTPS === 'true';
 
 // Middleware
 app.use(cors());
@@ -87,10 +93,10 @@ app.get('/api/stocks/:tickerSymbol', async (req, res) => {
 
 app.get('/api/stocks/:ticker_symbol/metrics', async (req, res) => {
   const ticker = req.params.ticker_symbol;
-  
+
   try {
-      const additionalMetricsQuery = `
-          SELECT 
+    const additionalMetricsQuery = `
+          SELECT
               MAX(close_price) AS max_price_52_week,
               MIN(close_price) AS min_price_52_week
           FROM stocks
@@ -98,7 +104,7 @@ app.get('/api/stocks/:ticker_symbol/metrics', async (req, res) => {
             AND date >= NOW() - INTERVAL '1 year';
       `;
 
-      const previousCloseQuery = `
+    const previousCloseQuery = `
           SELECT close_price
           FROM stocks
           WHERE ticker_symbol = $1
@@ -106,33 +112,66 @@ app.get('/api/stocks/:ticker_symbol/metrics', async (req, res) => {
           OFFSET 1 LIMIT 1;
       `;
 
-      // Execute the two queries in parallel
-      const [metricsResult, previousCloseResult] = await Promise.all([
-          pool.query(additionalMetricsQuery, [ticker]),
-          pool.query(previousCloseQuery, [ticker])
-      ]);
+    // Execute the two queries in parallel
+    const [metricsResult, previousCloseResult] = await Promise.all([
+      pool.query(additionalMetricsQuery, [ticker]),
+      pool.query(previousCloseQuery, [ticker])
+    ]);
 
-      if (metricsResult.rows.length === 0 || previousCloseResult.rows.length === 0) {
-          return res.status(404).json({ error: 'Metrics or previous close not found' });
-      }
+    if (metricsResult.rows.length === 0 || previousCloseResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Metrics or previous close not found' });
+    }
 
-      const additionalMetrics = metricsResult.rows[0];
-      const previousClose = previousCloseResult.rows[0].close_price;
+    const additionalMetrics = metricsResult.rows[0];
+    const previousClose = previousCloseResult.rows[0].close_price;
 
-      res.json({
-          max_price_52_week: additionalMetrics.max_price_52_week,
-          min_price_52_week: additionalMetrics.min_price_52_week,
-          previous_close: previousClose
-      });
-      
+    res.json({
+      max_price_52_week: additionalMetrics.max_price_52_week,
+      min_price_52_week: additionalMetrics.min_price_52_week,
+      previous_close: previousClose
+    });
   } catch (error) {
-      console.error('Error fetching stock metrics:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+    console.error('Error fetching stock metrics:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
+const createServer = () => {
+  if (!isHttpsEnabled) {
+    return {
+      server: http.createServer(app),
+      protocol: 'http'
+    };
+  }
+
+  const keyPath = process.env.SSL_KEY_PATH
+    ? path.resolve(process.cwd(), process.env.SSL_KEY_PATH)
+    : path.resolve(process.cwd(), 'certs/server.key');
+  const certPath = process.env.SSL_CERT_PATH
+    ? path.resolve(process.cwd(), process.env.SSL_CERT_PATH)
+    : path.resolve(process.cwd(), 'certs/server.crt');
+
+  if (!fs.existsSync(keyPath) || !fs.existsSync(certPath)) {
+    throw new Error(
+      `HTTPS is enabled but certificate files were not found. Expected key at ${keyPath} and cert at ${certPath}.`
+    );
+  }
+
+  return {
+    server: https.createServer(
+      {
+        key: fs.readFileSync(keyPath),
+        cert: fs.readFileSync(certPath)
+      },
+      app
+    ),
+    protocol: 'https'
+  };
+};
+
+const { server, protocol } = createServer();
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+server.listen(port, () => {
+  console.log(`Server is running on ${protocol}://localhost:${port}`);
 });

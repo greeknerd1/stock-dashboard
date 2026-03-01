@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { API_BASE_URL } from '../config';
 
 // Register the components used in the chart
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -24,7 +25,7 @@ function StockDetails() {
     const fetchStockDetails = async () => {
       try {
         // Fetch stock data based on selected period
-        const response = await fetch(`http://localhost:5001/api/stocks/${tickerSymbol}?period=${selectedPeriod}`);
+        const response = await fetch(`${API_BASE_URL}/api/stocks/${tickerSymbol}?period=${selectedPeriod}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -44,7 +45,7 @@ function StockDetails() {
   useEffect(() => {
     const fetchMetrics = async () => {
       try {
-        const response = await fetch(`http://localhost:5001/api/stocks/${tickerSymbol}/metrics`);
+        const response = await fetch(`${API_BASE_URL}/api/stocks/${tickerSymbol}/metrics`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

@@ -7,18 +7,7 @@ logs/
 
 # Environment variables
 .env
-.env.*
-**/.env
-**/.env.*
 
 # Build output
 /dist
 /build
-
-# Secrets and local certs
-*.pem
-*.key
-*.p12
-*.pfx
-certs/
-**/certs/

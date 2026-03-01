@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Watchlist.css'; // Import your CSS file
+import { API_BASE_URL } from '../config';
 
 const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -16,7 +17,7 @@ function Watchlist() {
     useEffect(() => {
         const fetchStocks = async () => {
             try {
-                const response = await fetch('http://localhost:5001/api/stocks');
+                const response = await fetch(`${API_BASE_URL}/api/stocks`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
