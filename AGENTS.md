@@ -77,6 +77,7 @@ When making changes, prefer:
 ## Coding Conventions For This Repo
 
 - Keep changes scoped to the relevant package (`frontend` vs `backend`).
+- Prefer the smallest possible code change that fully solves the requested issue.
 - Do not introduce new frameworks/build tools unless explicitly requested.
 - Preserve existing API route shapes to avoid breaking the current frontend.
 - Avoid hardcoding non-localhost API URLs unless introducing env-based configuration.
@@ -94,3 +95,4 @@ When making changes, prefer:
 - After editing, run the narrowest relevant checks available.
 - Report any unrun checks and why they were skipped (missing deps, missing DB/env, etc.).
 - Do not revert unrelated workspace changes.
+- Git policy: merge only (`git pull --no-rebase`); do not rebase unless explicitly requested by the user.
